@@ -1,5 +1,7 @@
 # The Twelve Factors App
 
+![](./statics/twelve-factor-app.png)
+
 원본: [The Twelve-Factor App](https://12factor.net/ko/)
 
 최근 소프트웨어를 서비스 형태로 제공하는게 일반화 되면서, 웹앱 혹은 `SaaS(Software As A Service)`라고 부르게 되었습니다. `Twelve-Factor app`은 아래 특징을 가진 SaaS 앱을 만들기 위한 방법론입니다.
