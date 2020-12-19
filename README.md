@@ -24,7 +24,7 @@
 
 ## 코드
 
-[리팩토링](https://github.com/TayPark/TIL/blob/master/NHN%20Forward%202020/Refactoring.md)
+[더 나은 내일을 위한 리팩토링](https://github.com/TayPark/TIL/blob/master/NHN%20Forward%202020/Refactoring.md)
 
 ## 아키텍처
 
