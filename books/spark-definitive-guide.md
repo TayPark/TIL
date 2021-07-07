@@ -10,14 +10,14 @@
 
 ### 5.1 스키마
 
-- 스키마는 DataFrame의 컬럼명과 데이터 타입을 정의
+- 스키마는 **DataFrame의 컬럼명과 데이터 타입을 정의**
 - 데이터소스에서 스키마를 얻거나(inference) 직접 정의
 
-참고: 데이터를 읽기 전 스키마를 정해야하는 여부는 상황에 따라 달라진다. 비정형 분석(ad-hoc analysis)에서는 schema-on-read가 대부분 잘 동작하지만 Long 데이터 타입을 Integer 타입으로 잘못 인식하는 등 정밀도 문제가 생길 수 있어 ETL 작업에 스파크를 사용할 때에는 직접 정의하는 것이 좋다.
+참고: 데이터를 읽기 전 스키마를 정해야하는 여부는 상황에 따라 달라진다. 비정형 분석(ad-hoc analysis)에서는 schema-on-read가 대부분 잘 동작하지만 Long 데이터 타입을 Integer 타입으로 잘못 인식하는 등 정밀도 문제가 생길 수 있어 **ETL 작업에 스파크를 사용할 때에는 직접 정의하는 것이 좋다.**
 
 - 스키마는 여러 개의 **StructField** 타입 필드로 구성된 **StructType** 객체이다.
   - 이름, 데이터 타입, 컬럼이 값이 없거나 null일 수 있는 boolean 값을 가진다.
-  - 스파크는 런타임에 데이터 타입이 스카마의 데이터 타입과 일치하지 않으면 오류를 발생시킨다.
+  - 스파크는 **런타임에 데이터 타입이 스카마의 데이터 타입과 일치하지 않으면 오류를 발생**시킨다.
   - 필요한 경우 컬럼과 관련된 메타데이터를 지정할 수 있다.
     - 메타데이터를 해당 컬럼과 관련된 정보이며 Spark MLlib에서 사용한다.
   - 스파크는 자체 데이터 타입 정보를 사용하므로 프로그래밍 언어의 데이터 타입을 스파크의 데이터 타입으로 설정할 수 없다.
@@ -56,7 +56,7 @@ DataFrameReader
   - schema
   - option
   - read mode
-    - permissive: 기본 값. 오류 레코드의 모든 필드를 null로 지정하고 _corrupt_record라는 문자열 컬럼에 기록
+    - permissive: 기본 값. 오류 레코드의 모든 필드를 null로 지정하고 `_corrupt_record`라는 문자열 컬럼에 기록
     - dropMalformed: 형식에 맞지 않는 레코드가 포함된 로우를 제거
     - failFast: 형식에 맞지 않는 레코드를 만나면 즉시 종료
 
@@ -90,12 +90,12 @@ dataFrame.write.format("csv")
 
 **저장 모드**
 
-`.option("mode", ...)`로 설정하는 저장 모드는 스파크가 지정된 위치에서 동일한 파일이 발견됐을 때 동작 방식을 지정하는 옵션
+`.option("mode", ...)`로 설정하는 저장 모드는 스파크가 지정된 위치에서 **동일한 파일이 발견됐을 때 동작 방식을 지정**하는 옵션
 
-- append: 해당 경로/파일에 덧붙임
-- overwrite: 덮어씀
-- errorIfExists: 기본 값. 오류를 발생시키며 작업 종료
-- ignore: 아무 일도 하지 않음
+- `append`: 해당 경로/파일에 덧붙임
+- `overwrite`: 덮어씀
+- `errorIfExists`: 기본 값. 오류를 발생시키며 작업 종료
+- `ignore`: 아무 일도 하지 않음
 
 ### 9.2 CSV
 
@@ -115,7 +115,7 @@ spark.read.format("csv")
   .load(DATA_PATH)
 ```
 
-스파크는 lazy execution 이므로 DataFrame 정의 시점이 아닌 runtime 시점에 오류가 발생한다. 예를 들어 DataFrame을 정의하는 시점에 존재하는 파일을 지정해도 오류가 발생하지 않는다.
+스파크는 lazy execution 이므로 DataFrame 정의 시점이 아닌 **runtime 시점에 오류가 발생**한다. 예를 들어 DataFrame을 정의하는 시점에 존재하는 파일을 지정해도 오류가 발생하지 않는다.
 
 #### 9.2.3 CSV 파일 쓰기
 
@@ -141,7 +141,7 @@ spark.read.format("json")
 - **Parquet**은 컬럼 기반의 데이터 저장 방식을 가지며 다양한 스토리지 최적화 기술을 제공하는 오픈소스
 - 분석 워크로드에 최적화
 - 저장소 공간을 절약할 수 있고 전체 파일을 읽는 대신 개별 컬럼을 읽을 수 있음
-- 컬럼 기반의 압축(Snappy, gzip 등)을 제공
+- **컬럼 기반의 압축(Snappy, gzip 등)을 제공**
 - 읽기 연산 시 JSON이나 CSV보다 훨씬 효율적으로 동작하므로 장기 저장용 데이터로 최적
 - 복합 데이터 타입 지원
   - 배열, 맵, 구조체 데이터 타입도 지원
@@ -149,8 +149,8 @@ spark.read.format("json")
 **Parquet 읽기/쓰기**
 
 - 옵션이 거의 없음
-  - 데이터를 저장할 때 자체 스키마를 사용하여 데이터를 저장하기 때문
-    - 스키마가 파일 자체에 내장되어 있어 추정이 불필요
+  - **데이터를 저장할 때 자체 스키마를 사용하여 데이터를 저장**하기 때문
+    - **스키마가 파일 자체에 내장**되어 있어 추정이 불필요
   - DataFrame으로 표현하기 위해 정확한 스키마가 필요한 경우에만 스키마 설정
     - 하지만 이것도 거의 불필요
     - CSV의 inferSchema처럼 읽는 시점에 스키마를 알 수 있기 때문(schema-on-read)
@@ -170,7 +170,7 @@ spark.read.format("parquet")
 ### 9.5 ORC 파일
 
 - `ORC`는 하둡 워크로드를 위해 설계된 자기 기술적이며 데이터 타입을 인식할 수 있는 컬럼 기반의 파일 포맷
-- 대규모 스트리밍 읽기에 최적화
+- **대규모 스트리밍 읽기에 최적화**
 - 필요한 레코드를 신속하게 찾아낼 수 있는 기능 통합
 - 스파크는 별도의 옵션 지정 없이 데이터를 읽을 수 있음
 - Parquet vs. ORC
@@ -189,7 +189,7 @@ spark.read.format("orc")
 - 데이터베이스는 원시 파일 형태가 아니므로 고려해야 할 옵션이 많다.
   - 데이터베이스 인증 정보 및 접속 정보 등
 - 스파크 클러스터에서 데이터베이스 시스템에 접속이 가능한지 네트워크 상태 확인 필요
-- 데이터베이스 R/W를 위해서는 스파크 classpath에 데이터베이스의 JDBC 드라이버와 그에 맞는 JDBC driver jar를 제공해야 함
+- **데이터베이스 R/W를 위해서는 스파크 classpath에 데이터베이스의 JDBC 드라이버와 그에 맞는 JDBC driver jar를 제공**해야 함
 
 ```s
 $ ./bin/spark-shell \
@@ -251,8 +251,8 @@ val pgDF = spark.read.format("jdbc")
 
 #### 9.6.2 쿼리 푸시다운
 
-- 스파크는 DataFrame을 만들기 전 데이터베이스 자체에서 데이터를 필터링하도록 만들 수 있음
-  - DataFrame에 필터를 명시하면 스파크는 해당 필터에 대한 처리를 데이터베이스에 위임(push-down)
+- 스파크는 DataFrame을 만들기 전 **데이터베이스 자체에서 데이터를 필터링하도록 만들 수 있음**
+  - DataFrame에 필터를 명시하면 스파크는 해당 **필터(where 절)에 대한 처리를 데이터베이스에 위임(push-down)**
   - 실행 계획의 PushedFilters 에서 확인 가능
 - 모든 스파크 함수를 SQL DB에 맞게 변환하지 못하므로 전체 쿼리를 전달해 DataFrame으로 받아야 하는 경우도 있음
   - 이 경우 `.option("dbtable", TABLE_NAME)` 의 TABLE_NAME에 SQL을 작성하면 된다.
@@ -271,7 +271,8 @@ val dbDataFramePushDown = spark.read.format("jdbc")
 **데이터베이스 병렬로 읽기**
 
 - 파티셔닝(분할)과 데이터 처리 시 파티셔닝의 중요성을 이야기함
-- 스파크는 파일 크기, 파일 유형, 압축 방식에 따른 **분할 가능성**에 따라 여러 파일을 읽어 하나의 파티션으로 만들거나 여러 파티션을 하나의 파일로 만드는 기본 알고리즘을 가짐
+- 스파크는 파일 크기, 파일 유형, 압축 방식에 따른 **분할 가능성**에 따라 여러 파일을 읽을 수 있음
+  - 이를 하나의 파티션으로 만들거나 여러 파티션을 하나의 파일로 만드는 기본 알고리즘을 가짐
 - `numPartitions` 옵션을 사용하여 R/W용 동시 작업 수를 제한할 수 있는 최대 파티션 수를 설정 가능
 
 ```scala
@@ -282,6 +283,7 @@ val dbDataFrame = spark.read.format("jdbc")
   .option("numPartitions", 10)
   .load()
 ```
+
 - 데이터베이스 연결을 통해 명식적으로 조건절을 SQL 데이터베이스에 위임할 수 있다.
 - 조건절을 명시하여 특정 파티션에 특정 데이터의 물리적 위치를 제어할 수 있다.
   - 예제로 두 국가에 대한 필터를 데이터베이스에 위임하여 처리된 결과를 반환할 수도 있다.
@@ -339,11 +341,11 @@ spark.read.jdbc(url, tablename, colName, lowerBound, upperBound, numPartitions, 
 #### 9.8.1 분할 가능한 파일 타입과 압축 방식
 
 - 파일 포맷이나 파일 시스템(HDFS 등)에 따라 분할, 분산 저장 방식이 있어 최적화 가능
-- 추천하는 방식은 Parquet과 gzip
+- 추천하는 방식은 `Parquet과` `gzip`
 
 #### 9.8.2 병렬로 데이터 읽기
 
-- 같은 파일을 동시에 읽을 수는 있지만 여러 파일을 동시에 읽을 수는 없다
+- 같은 파일을 동시에 읽을 수는 있지만 **여러 파일을 동시에 읽을 수는 없다**
 - 다수의 파일이 존재하는 폴더를 읽을 때 폴더의 개별 파일은 DataFrame의 파티션이 된다
 - 사용 가능한 익스큐터를 이용하여 병렬(익스큐터 수를 넘어가는 파일은 처리중인 파일이 완료될 때까지 대기)로 파일을 읽음
 
@@ -360,7 +362,7 @@ spark.read.jdbc(url, tablename, colName, lowerBound, upperBound, numPartitions, 
 - 파티셔닝된 디렉토리 또는 테이블에 파일을 쓸 때 디렉토리별 컬럼 데이터를 인코딩하여 저장
 - 데이터를 읽을 때 전체 데이터셋을 스캔하지 않고 필요한 컬럼의 데이터만 읽을 수 있음
   - 파일 기반의 모든 데이터 소스에서 지원
-- 필터링을 자주 사용하는 테이블을 가진 경우 사용할 수 있는 가장 쉬운 최적화
+- **필터링을 자주 사용하는 테이블을 가진 경우 사용할 수 있는 가장 쉬운 최적화**
   - 지난주 데이터의 통계만 필요하다면 날짜를 기준으로 파티션을 만들 수 있음
 
 **버켓팅**
@@ -423,7 +425,7 @@ SELECT explode(collected_counts), DEST_COUNTRY_NAME FROM flights_agg
 
 ## 챕터 11 - Dataset
 
-- Dataset은 구조적 API의 기본 데이터 타입
+- **Dataset은 구조적 API의 기본 데이터 타입**
   - DataFrame은 Row 타입의 Dataset
     - 실제로 `type DataFrame = Dataset[Row]`로 선언
     - DataFrame API를 사용할 때 Row 객체를 변환하여 데이터 처리
@@ -438,14 +440,14 @@ SELECT explode(collected_counts), DEST_COUNTRY_NAME FROM flights_agg
     - Dataset API를 사용하면 스파크는 데이터셋에 접근할 때마다 **사용자 정의 데이터 타입으로 변환**
       - 성능 하락이 있으나 Python UDF 만큼은 아님
         - 프로그래밍 언어 변환이 UDDT(User Defined Data Type)을 사용하는 것 보다 느림
-      - **프로그래밍 유연성 제공**
       - **사용 이유**
+        - 프로그래밍 유연성 제공
         - DataFrame 기능만으로 수행할 연산을 표현할 수 없는 경우
-        - 성능 저하를 감수하더라도 타입 세이프 데이터 타입을 사용하고 싶은 경우
-        - 복잡한 비즈니스 로직을 SQL이나 DataFrame 대신 단일 함수로 인코딩해야 하는 경우 발생
+        - 성능 저하를 감수하더라도 **타입 세이프 데이터 타입을 사용**하고 싶은 경우
+          - 복잡한 비즈니스 로직을 SQL이나 DataFrame 대신 단일 함수로 인코딩해야 하는 경우 발생
           - 데이터 타입이 유효하지 않은 작업은 런타임이 아닌 컴파일 타임에 오류가 발생
-          - **정확도와 방어적인 코딩을 중요시한다면 성능을 희생하더라도 Dataset API를 사용하는 것이 현명**
-        - 단일 노드의 워크로드와 스파크 워크도르에서 전체 로우에 대한 다양한 트랜스포메이션을 재사용할 때
+          - 정확도와 방어적인 코딩을 중요시한다면 성능을 희생하더라도 Dataset API를 사용하는 것이 현명
+        - 단일 노드의 워크로드와 스파크 워크로드에서 전체 레코드에 대한 다양한 트랜스포메이션을 재사용할 때
           - Spark API는 Scala Sequence 타입의 API가 일부 반영되어 있지만 분산 방식으로 동작
           - Dataset을 사용하는 장점 중 하나는 로컬과 분산 환경의 워크로드에서 재사용할 수 있다는 점
             - Scala `case class`로 정의된 데이터 타입을 사용하여 모든 데이터와 트랜스포메이션을 정의하면 재사용 가능
@@ -470,7 +472,7 @@ Dataset<Flight> flights = spark.read.parquet(DATA_PATH)
 
 **스칼라**
 
-스칼라의 `case class`는 다음과 같은 특징을 가진 정규 클래스이다.
+스칼라의 `case class`는 다음과 같은 특징을 가진 정규 클래스
 - 불변
   - 객체가 어디서 변경되었는지 추적 필요 X
 - 패턴 매칭으로 분해 가능
@@ -591,8 +593,8 @@ flights
 ### 12.1 저수준 API란
 
 - 스파크에는 두 가지 저수준 API 존재
-  - 분산 데이터 처리를 위한 RDD
-  - broadcast variable, accumulator 처럼 분산형 공유 변수를 배포하고 다루기 위한 API
+  - **분산 데이터 처리를 위한 RDD**
+  - broadcast variable, accumulator 처럼 **분산형 공유 변수를 배포하고 다루기 위한 API**
 - 언제 사용할까
   - 고수준 API에서 제공하지 않는 기능이 필요한 경우
     - 클러스터의 물리적 데이터 배치를 세밀하기 제어
@@ -671,7 +673,6 @@ words.flatMap(word => word.toSeq).take(5) // Array[Char] = Array(S, p, a, r, k)
 
 // sortBy(길이가 가장 긴 순서로 나열하는 예제)
 words.sortBy(word => word.length() * -1).take(2)
-
 ```
 
 ### 12.6 액션
@@ -704,7 +705,7 @@ words.takeSample(true, 6, 100L)
 - RDD 캐싱도 DataFrame와 Dataset과 동일한 원칙이 적용
 - 캐시와 저장은 메모리에 있는 데이터를 대상으로 한다.
 - setName() 을 사용하면 캐시된 RDD에 이름을 지정할 수 있다.
-- 저장소 수준은 싱글턴 객체인 org.apache.spark.storage.StorageLevel의 속성 으로 정한다.
+- 저장소 수준은 싱글턴 객체인 `org.apache.spark.storage.StorageLevel`의 속성 으로 정한다.
   - memory
   - disk
   - off-heap
@@ -714,8 +715,8 @@ words.takeSample(true, 6, 100L)
 
 - DataFrame에 없는 기능 중 하나
 - RDD를 디스크에 저장하는 방식
+- **반복적인 연산 수행시 매우 유용**
 - 저장된 RDD를 참조할 때에는 원본 데이터 소스를 다시 계산하여 RDD를 생성하지 않고 디스크에 중간 결과 파티션을 참조
-- 반복적인 연산 수행시 매우 유용
 
 ```scala
 spark.sparkContext.setCheckPointDir(SOME_PATH_HERE)
@@ -764,8 +765,6 @@ keyword.lookup("s") // 키가 "s" 인 인자 반환
 
 - RDD를 사용하여 데이터가 클러스터 전체에 물리적으로 정확히 분산되는 방식을 정의할 수 있음
 
-
-
 ```scala
 // coalesce: 파티션을 재분배할 때 발생하는 데이터 셔플을 방지하기 위해 동일한 워크에 존재하는 파티션을 합치는 메서드
 words.coalesce(1).getNumPartitions // 1
@@ -779,7 +778,7 @@ words.repartition(10) // 10개 파티션 생성
 #### 13.5.4 사용자 정의 파티셔닝
 
 - 구조적 API에서 사용자 정의 파티셔너를 파라미터로 사용할 수 없음
-- RDD를 사용하는 가장 큰 이유 중 하나
+- **RDD를 사용하는 가장 큰 이유 중 하나**
   - 데이터 치우침(skew) 문제를 피하고자 클러스터 전체에 걸쳐 데이터를 균등 분해하는 것이 목적
   - PageRank가 대표적
     - 클러스터의 데이터 배치 구조를 제어하고 셔플을 회피
@@ -815,7 +814,6 @@ keyedRdd.partitionBy(new HashPartitioner(10)).take(10)
   - SparkConf를 사용하여 초기화하는 시점에서 `spark.serializer` 속성을 `org.apache.spark.serializer.KryoSerializer`로 설정
   - 기본값이 아닌 이유는 사용자가 직접 클래스를 등록해야 하기 때문
   - 스파크 2.0 버전부터는 단순 데이터 타입과 배열, 문자열 데이터 타입의 RDD를 셔플링하면 내부적으로 Kryo 사용
-  - 
 
 ```scala
 class SomeClass extends Serializable {
@@ -840,11 +838,11 @@ val sc = new SparkContext(conf)
 
 ### 14.1 브로드캐스트 변수
 
-- 클러스터에서 효율적으로 공유하는 방법을 제공
+- **클러스터에서 효율적으로 공유하는 방법을 제공**
   - 기존에는 불변성 값을 closure 함수의 변수로 캡슐화
   - 클로저 함수에서 변수를 사용할 때 워커 노드에서 여러 번(태스크 당 1회) 역직렬화가 발생, 비효율적
   - 여러 스파크 액션과 잡에서 동일한 변수를 사용하면 잡을 실행할 때마다 워커로 큰 변수를 재전송
-- `브로드캐스트 변수`: 모든 태스크마다 직렬화하지 않고 클러스터의 모든 머신에 캐시하는 공유 변수
+- `브로드캐스트 변수`: 모든 태스크마다 직렬화하지 않고 **클러스터의 모든 머신에 캐시하는 공유 변수**
 
 ```scala
 val supplementalData = Map("Spark" -> 1000, "Definitive" -> 200, "Big" -> -300, "Simple" -> 100)
@@ -858,7 +856,7 @@ words.map(word => (word, suppBroadcast.value.getOrElse(word, 0))) // 비어있�
   .collect()
 ```
 
-- 큰 데이터를 사용하는 경우 전체 태스크에서 데이터를 직렬화하는 데 발생하는 부하가 크므로 브로드캐스트 변수 활용
+- **큰 데이터를 사용하는 경우** 전체 태스크에서 데이터를 직렬화하는 데 발생하는 부하가 크므로 브로드캐스트 변수 활용
 - UDF나 Dataset에서도 사용할 수 있음
 
 ### 14.2 Accumulator
@@ -993,7 +991,7 @@ spark-summit 명령어를 사용하는 예제
   - 클러스터 매니저는 요청을 수락하고 클러스터 노드 중 하나에 드라이버 프로세스 실행
   - 스파크 잡을 제출한 클라이언트 프로세스는 종료됨
 2. 시작
-  - 사용자 코드에는 스파크 클러스터를 초기화하는 **SparkSession**이 포함
+  - 스파크 애플리케이션에는 스파크 클러스터를 초기화하는 **SparkSession**이 포함
     - SparkSession은 클러스터 매니저와 통신, 스파크 익스큐터 프로세스의 실행을 요청
    - 클러스터 매니저는 익스큐터 프로세스를 시작하고 결과를 받아 익스큐터의 위치와 관련된 정보를 드라이버 프로세스로 전송
    - 모든 작업이 완료되면 **스파크 클러스터**가 완성
@@ -1009,31 +1007,31 @@ spark-summit 명령어를 사용하는 예제
 
 ### 스파크 애플리케이션 생애주기(내부)
 
-1. SparkSession
+1. **SparkSession**
   - 모든 스파크 애플리케이션이 가장 먼저 생성하는 것
   - 대화형 모드에서는 자동으로 생성되지만, 애플리케이션을 만드려면 직접 생성해야 함
     - SparkSession의 `builder()`를 사용하면 스파크와 스파크 SQL 컨텍스트를 안전하게 생성 가능
       - 다수의 라이브러리가 세션을 생성하려는 상황에서 컨텍스트 충돌 방지
-2. SparkContext
+2. **SparkContext**
   - 스파크 클러스터에 대한 연결
   - 스파크 저수준 API 사용(RDD)
   - 대부분 SparkSession으로 SparkContext에 접근할 수 있으므로 명시적인 초기화는 필요없음
-3. 논리적 명령
+3. **논리적 명령**
   - (모니터링 관련된 내용은 스파크 UI를 사용하면 더 자세하게 추적 가능)
   - collect 같은 액션을 호출하면 개별 **스테이지**와 **태스크**로 이루어진 스파크 **잡** 실행
-4. 스파크 잡
+4. **스파크 잡**
   - 액션 하나당 하나의 스파크 잡 생성, 액션은 항상 결과 반환
-  - 스테이지
+  - **스테이지**
     - 다수의 머신에서 동일한 연산을 수행하는 태스크 그룹
     - 스파크는 가능한 많은 태스크(트랜스포메이션)을 동일한 스테이지에 묶으려 함
     - 셔플 작업 이후에는 반드시 새로운 스테이지 시작
-   - 태스크
-     - 스테이지는 태스크로 구성
+   - **태스크**
+     - 스테이지를 이루는 작은 작업들을 태스크라 함
      - 각 태스크는 **익스큐터에서 실행할 데이터의 블록과 다수의 트랜스포메이션의 조합**
        - 하나의 파티션의 경우 하나의 태스크만 생성
        - 1000개의 작은 파티션으로 구성되어 있다면 1000개의 태스크를 만들어 병렬로 실행 가능
      - 파티션 수를 늘리면 더 높은 병렬성을 얻을 수 있음(최적화)
-5. 세부 실행 과정
+5. **세부 실행 과정**
   - 스파크는 map 연산 후 다른 map 연산이 이어진다면 **함께 실행할 수 있도록 스테이지와 태스크를 자동으로 연결**
   - 스파크는 모든 셔플을 작업할 때 데이터를 안정적인 저장소(디스크 등)에 저장하므로 여러 잡에서 재사용 가능
   - 파이프라이닝
@@ -1167,7 +1165,6 @@ spark-summit 명령어를 사용하는 예제
     2. GC가 자주 수행
     3. JVM 내에 객체가 많이 생성되어 더 이상 사용하지 않는 객체를 GC가 정리하면서 실행속도 저하
       -> 구조적 API 활용. 스파크 잡의 효율성이 높아지고 JVM 객체를 생성하지 않음!
-
 - 병렬화
   - `spark.default.parallelism`과 `spark.sql.shuffle.partitions`의 값을 클러스터 코어 수에 맞게 설정
   - 스테이지에서 처리해야 할 데이터양이 매우 많다면 클러스터 CPU 코어당 2-3개의 태스크 할당
@@ -1207,7 +1204,7 @@ source: https://www.youtube.com/watch?v=GDeePbbCz2g&ab_channel=SparkSummit, http
 ### 분석 단계
 
 - SQL 파서가 반환하는 AST(추상 구문 트리) 또는 API를 사용하여 생성된 DataFrame에서 계산
-- SparkSQL은 Catalyst 규칙과 모든 데이터 소스의 catalog 개체를 이용하여 최적화
+- SparkSQL은 Catalyst 규칙과 모든 데이터 소스의 catalog 개체를 이용하여 논리적 계획 생성
 - 해결되지 않은 논리적 계획을 생성한 다음 최적화 시작
 
 ### 논리적 최적화
@@ -1219,26 +1216,28 @@ source: https://www.youtube.com/watch?v=GDeePbbCz2g&ab_channel=SparkSummit, http
 ### 물리적 계획
 
 - 물리 연산자가 Spark 실행 엔진과 일치하는 것을 사용하여 논리적 계획에서 하나 이상의 물리적 계획 형성
-- 비용 모델을 사용하여 계획 선택
+- **비용 모델을 사용하여 계획 선택**
 - 비용 기반 최적화, 조인 알고리즘 선택
 
 ### CodeGen
 
 - 각 시스템에서 실행할 Java bytecode를 생성하는 것을 포함
-- Whole-stage codegen
+- **Whole-stage codegen**
   - Spark SQL의 물리적 쿼리 최적화 단계
   - 단일 Java 기능 형성
 - 전체 Java 코드 생성은 쿼리 트리의 불필요한 호출을 제거하고 중간 데이터에 CPU 레지스터 캐싱을 활용하여 실행 성능 향상
 
-카탈리스트 옵티마이저는 다음의 순서를 따른다.
-
-1. Unresolved logical pland을 catalog로 분석, Logical plan 생성
-2. Logical plan을 데이터 소스로의 최적화 위임(predicate pushdown), 상수 계산 최적화(constant folding), projection, reordering 등으로 Logical plan을 최적화한다.
+요약)
+1. DataFrame API와 AST를 분석하여 Unresolved Logical plan 생성
+2. Unresolved Logical plan을 데이터 소스로의 최적화 위임(predicate pushdown), 상수 계산 최적화(constant folding), projection, reordering 등으로 Logical plan을 최적화한다.
 3. 해당 Logical plan으로 physical plan을 생성
   1. 여러 전략(strategies)으로 변환
   2. Rule executor 로 실행 준비
   3. 물리적 최적화 실행
-
+4. CodeGen
+  - 자바 바이트코드 생성
+  - 물리적 쿼리 최적화
+  - CPU 레지스터 캐싱
 ## 텅스텐 옵티마이저
 
 https://www.linkedin.com/pulse/catalyst-tungsten-apache-sparks-speeding-engine-deepak-rajak/
@@ -1399,5 +1398,242 @@ https://www.linkedin.com/pulse/catalyst-tungsten-apache-sparks-speeding-engine-d
 - 데이터가 도착할 때마다 자동으로 incremental 연산 결과를 만들어냄
   - 개발자는 서로 다른 처리 시스템에 대한 배치 및 스트리밍 코드를 별도로 관리하지 않아도 됨
 
-### 챕터 21. 구조적 스트리밍 기초
+## 챕터 21. 구조적 스트리밍 기초
+
+- 구조적 스트리밍은 구조적 API 사용
+- 스트리밍 연산은 배치 연산과 동일하게 표현
+  - 스트림 처리용 코드와 목적지를 정의하면 구조적 스트리밍 엔진에서 신규 데이터에 대한 increment 및 연속형 쿼리 실행
+- 구조적 처리 엔진 외에도 스트리밍에 특화된 여러 기능 제공
+  - 정확히 한 번 처리(at least once)
+  - 체크포인팅
+  - WAL(Write-ahead log): 내고장성 제공
+- 핵심 아이디어: 스트림 데이터를 데이터가 계속해서 추가되는 테이블처럼 다루는 것
+  - 스트리밍 잡은 계속 신규 입력 데이터를 확인 및 처리
+  - 필요한 경우 상태 저장소(state store)의 일부 상태를 갱신하여 결과 반영
+  - 배치나 스트리밍 처리를 위해 관련된 구문을 변경하지 않음
+    - 실행 유형만 지정
+  - 하지만 이벤트 시간 처리나 무작위 순서 입력 데이터처럼 스트림 처리에 필요한 몇 가지 새로운 개념도 고려
+
+#### 핵심 개념
+
+- `트랜트포메이션과 액션에서의 제약사항`
+  - 엔진에서 incremental 처리를 할 수 없는 일부 쿼리 유형과 관련
+  - 구조적 스트리밍에는 스트림 처리를 시작한 뒤 연속적으로 처리하여 결과를 출력하는 한 가지 액션만 존재
+- `입력 소스`
+  - Kafka
+  - HDFS, S3 등 분산 파일 시스템의 파일
+- `싱크(데이터 아웃풋)`
+  - 스트림 결과를 저장할 데이터 목적지 명시
+  - Kafka
+  - file format
+  - console, memory sink
+- `출력 모드`
+  - 출력하는 방법 정의 필요
+  - 상황들
+    - 신규 정보만 추가하는 경우
+    - 바뀐 정보로 기존 로우를 갱신(웹 페이지의 클릭 수 갱신 등)
+    - 매번 전체 결과를 덮어쓰는 경우(모든 페이지의 전체 클릭 수를 매번 파일로 기록 등)
+    - **=> 정적 형태의 API 처럼 출력 모드를 지정해야 함**
+  - 지원 출력 모드
+    - append: 싱크에 신규 레코드만 추가
+    - update: 변경 대상 레코드 자체를 갱신
+    - complete: 전체 출력 내용 재작성
+  - 특정 쿼리와 싱크는 일부 출력 모드만 지원
+    - `map`연산을 수행한다고 가정하면 complete 모드는 부적합하다
+      - 매번 전체 데이터를 신규 파일로 저장해야 함
+    - 한정된 수의 키를 사용하여 집계한다면 시간에 따라 일부 키를 갱신해야 한다
+      - append보다 complete나 update 권장
+- `트리거`
+  - 데이터 출력 시점 정의
+  - **신규 데이터 확인 시점**과 **결과 갱신 시점 정의**
+  - 구조적 스트리밍의 처리 방식
+    - 마지막 데이터 입력을 처리한 후에 신규 입력 데이터를 조회하여 처리
+    - 파일 싱크를 사용하는 경우 작은 크기의 파일이 여러 개 생길 수 있음
+    - 스파크는 처리 시간(고정된 주기로 신규 데이터 탐색) 기반 트리거 지원
+- `이벤트 시간 처리`
+  - 무작위로 도착한 레코드 내부에 기록된 타임스탬프 기준
+  - 이벤트 시간 데이터
+    - 이벤트 시간: 데이터에 기록된 시간 필드
+    - 스파크는 데이터 생성 시간을 기준으로 처리
+      - 데이터가 늦게 업로드되거나 네트워크 지연으로 데이터 순서가 뒤섞여도 처리 가능
+      - 구조적 스트리밍 내부적으로 이벤트 시간 필드를 인식하면 쿼리 실행 최적화나 타임 윈도우에서 상태 정보의 제거 시점을 결정하는 등 작업 수행
+    - **워터마크**
+      - 시간 제한을 설정할 수 있는 스트리밍 시스템의 기능
+      - 늦게 들어온 이벤트를 어디까지 처리할지 시간 제한
+        - 모바일 장비 로그 처리 애플리케이션의 경우 업로드 지연이 있을 수 있음
+        - 이벤트 시간 처리 지원 시스템은 과거 데이터의 보관 주기를 제한하기 위해 워터마크 사용
+      - 특정 이벤트 시간의 윈도우 결과를 출력하는 시점을 제어할 때도 사용
+        - 예) 워터마크 시간을 초과할 때까지 대기
+
+#### 구조적 스트리밍 활용
+
+- 구조적 스트리밍에서 **스키마 추론 기능**을 사용하려면 `spark.sql.stremaing.schemaInference`를 `true`로 설정한다.
+  - 하지만 운영 환경에서는 사용하지 말자
+- 아래 코드에서 `maxFilePerTrigger`는 다음의 역할을 한다
+  - 폴더 내의 전체 파일을 얼마나 빨리 읽을 것인지 결정
+  - 값을 낮추면 트리거당 하나의 파일을 읽게함
+  - 구조적 스트리밍 incremental 처리를 보여주기 위해 1로 설정
+
+```scala
+val streaming = spark.readStream.schema(dataSchema)
+  .option("maxFilePerTrigger", 1) 
+  .json(DATA_PATH)
+
+val activityCounts = streaming.groupBy("gt").count()
+
+spark.conf.set("spark.sql.shuffle.partitions", 5) // 로컬 머신으로 가정
+
+val activityQuery = activityCounts.writeStream.queryName("activity_counts") // 테이블 이름을 activity_counts 라고 지정
+  .format("memory")
+  .outputMode("complete")
+  .start()
+
+activityQuery.awaitTermination() // 백그라운드에서 스트리밍 연산. 쿼리 종료 시까지 대기할 수 있도록 지정. 드라이버 프로세스 종료를 막기 위함.
+```
+
+- 다른 스파크 API처럼 지연 처리 방식으로 동작
+- 스파크는 각 스트림에 UUID 부여
+  - `spark.streams.active` 코드로 실행 중인 스트림 목록 확인 가능
+- 스트리밍 쿼리 결과를 1초마다 출력하는 반복문 사용
+
+```scala
+for ( i <- 1 to 5) {
+  spark.sql("SELECT * FROM activity_counts").show()
+  Thread.sleep(1000)
+}
+```
+
+## 챕터 22. 이벤트 시간과 상태 기반 처리
+
+### 이벤트 시간 처리
+
+- DStreamAPI는 이벤트 시간과 관련된 처리 정보를 제공하지 않음
+- 스트림 처리 시스템은 두 가지 이벤트 유형
+  - 이벤트가 발생한 시간(이벤트 시간) - 데이터에 기록된 타임스탬프
+    - 도착 순서가 뒤바뀔 경우 제어하는 방법 필요
+  - 이벤트가 시스템에 도착한 시간 또는 처리된 시간(처리 시간) - 처리 시스템 시간
+
+### 상태 기반 처리
+
+- 오랜 시간에 걸쳐 중간 정보(상태)를 사용하거나 갱신하는 경우
+  - micro batch
+  - record at a time
+- 이벤트 시간을 사용하거나 키에 대한 집계를 사용하는 상황에서 발생
+  - 집계 키가 반드시 이벤트 시간과 연관성을 가져야하는건 아님
+- 스파크는 상태 기반 연산에 필요한 **중간 상태 정보를 상태 저장소에 저장함**
+  - 상태 저장소의 구현체인 인메모리 상태 저장소 제공
+  - 중간 상태 체크포인팅, 내고장성 보장
+
+### 임의 상태 기반 처리
+
+- 상태 유형, 갱신 방법, 제거 시점에 따라(명시적 또는 타임아웃) 세밀한 제어의 필요성 제기
+  - 이를 임의적인(사용자 정의) 상태 기반 처리라고 함
+  - 이커머스에서 사용자 세션 정보 기록. 실시간 추천 서비스를 제공하기 위해 유저 트래킹
+  - 웹앱에서 사용자 세션별로 오류가 5회 발생했을 때 오류를 보고(카운트 기반 윈도우)
+
+### 이벤트 시간 처리의 기본
+
+### 이벤트 시간 윈도우
+
+- 이벤트 시간 분석의 첫 단계는 타임스탬프 컬럼을 Spark SQL TimeStamp 타입으로 변환하는 것
+- 슬라이딩 윈도우(배치 기간 정의)로 데이터를 집계할 수도 있음
+
+### 워터마크로 지연 데이터 제어
+
+- 데이터가 늦게 도착하여 다음 윈도우를 위한 연산이 시작되었을 경우
+  - 이벤트 시간과 상태 기반 처리를 사용하면 특정 윈도우의 상태나 데이터셋이 처리 윈도우에서 분리
+  - 더 많은 이벤트가 유입될수록 구조적 스트리밍이 더 많은 정보를 이용해 윈도우를 계속 갱신
+
+```scala
+// 5시간 지연 예제
+import org.apache.spark.sql.functions.{window, col}
+
+withEventTime
+  .withWatermark("event_time", "5 hours")
+  .groupBy(window(col("event_time"), "10 minutes", "5 minutes"))
+  .count()
+  .writeStream
+  .queryName("events_per_window")
+  .format("memory")
+  .outputMode("complete")
+  .start()
+```
+
+- 설정만 추가하면 지연 처리가 가능
+- 해당 윈도우의 결과를 만들기 위해 10분 단위 rolling window의 마지막 타임스탬프 5시간을 대기
+- 계속해서 결과를 만드는 complete 모드를 사용하므로 테이블을 쿼리해서 중간 결과를 계속 확인 가능
+- 스파크는 **지연된 데이터를 어느 시점까지 보고 싶은지 지정하지 않으면 모든 데이터를 메모리에 영원히 보관**
+  - **`워터마크`를 지정하면 이 데이터를 메모리에서 제거**, 스트림 처리를 오랜 시간에 걸쳐 안정적으로 수행 가능
+
+### 스트림에서 중복 데이터 제거
+
+- 중복을 찾기 위해서는 여러 레코드를 반드시 한 번에 처리해야 함
+  - 한 번에 많은 레코드를 처리하므로 처리 시스템에 큰 부하
+- 스파크는 데이터 중복 제거를 위해 사용자가 지정한 키를 유지하면서 중복 여부 확인
+  - 상태 정보가 무한히 커지지 않도록 워터마크 명시 필요
+
+```scala
+import org.apache.spark.sql.functions.expr
+
+withEventTime
+  .withWatermark("event_time", "5 seconds")
+  .dropDuplicates("User", "event_time")
+  .groupBy("User")
+  .count()
+  .writeStream
+  .queryName("deduplicated")
+  .format("memory")
+  .outputMode("complete")
+  .start()
+```
+
+### 임의 상태 기반 처리
+
+- 상태 기반 처리 유형
+  - 특정 키의 개수를 기반으로 윈도우 생성
+  - 특정 시간 범위 내 일정 개수 이상의 이벤트가 있는 경우 알림 발생
+  - 결정되지 않은 시간 동안 사용자 세션을 유지하고 향후 분석을 위해 세션 저장
+- 두 가지 처리 유형
+  - 데이터의 각 그룹에 map 연산을 수행하고 각 그룹에서 최대 한 개의 레코드: mapGroupsWithState API
+  - 데이터의 각 그룹에 map 연산을 수행하고 각 그룹에 하나 이상의 레코드: flatMapGroupsWithState API
+- 타임아웃
+  - 중간 상태를 제거하기 전 기다려야 하는 시간을 정의
+  - 각 키별로 그룹이 존재한다고 했을 때 타임 아웃은 전체 그룹에 대한 전역 파라미터로 동작
+  - `처리 시간(GroupStateTimeout.ProcessingTimeTimeout)`이나 `이벤트 시간(GroupStateTimeout.EventTimeTimeout)` 중 하나임
+    - 값을 처리하기 전 항상 타임아웃을 먼저 확인해야 함
+      - state.hasTimedOut 값이나 values 이터레이터가 비어있는지 확인하는 방식으로 타임아웃 정보를 얻을 수 있음
+    - 처리 시간 기반의 타임아웃을 사용할 때는 GroupState.setTimeoutDuration으로 주기 설정
+    - 시간이 설정한 주기만큼 흐르면 타임아웃 발생
+
+## 챕터 23. 운영 환경에서의 구조적 스트리밍
+
+- 내고장성과 체크포인팅
+  - 스파크 엔진이 자동으로 관리하는 체크포인트와 WAL을 사용하도록 설정
+
+```scala
+val static = spark.read.json(DATA_PATH)
+val query = streaming
+  .writeStream
+  .outputMode("complete")
+  .option("checkpointLocation", CHECKPOINT_LOC)
+  ...
+```
+
+- 애플리케이션 변경
+  - 스트리밍 애플리케이션을 업데이트 할 때 이전 체크포인트 데이터를 고려해야 함
+  - 스파크 버전을 올리려면
+    - 릴리즈 노트를 호가인하여 체크포인트 호환성 검토 필요
+  - 애플리케이션 초기 규모 상정과 재조정
+    - 스트림만 재시작
+- 메트릭과 모니터링
+  - `query.status`: 지금 스트림에서 어떤 처리를 하는지
+  - `query.recentProgress`: 튜플을 얼마나 처리하는지, 소스에서 이벤트가 얼마나 빠르게 들어오는지 등 최근 진행 상황
+- 유입률과 처리율
+  - 처리율이 유입률보다 낮을 경우 스파크 클러스터를 증설해야 함
+- 스트리밍 리스너를 사용한 고급 모니터링
+  - `StreamingQueryListener` 클래스를 이용하여 비동기 방식으로 스트리밍 쿼리 정보를 수신한 후 다른 시스템에서 모니터링을 구축할 수 있음
+
+# 파트 5. 고급 분석과 머신러닝
+
+## 챕터 24. 고급 분석과 머신러닝 개요
 
