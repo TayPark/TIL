@@ -53,16 +53,3 @@ AIX에서 inode를 검사하는 빠른 방법으로 istat 명령어가 있다. i
  0443034 aws                         8614913 k8s-kube                   11606226 spark-kinesis-integration
  19013432 coding-test-fry            17821859 kafka-and-elk-example       6091599 transfer-learning
 ```
-
-`find`
-
-find를 사용하면 ls 명령어로 시작한 작업을 마무리할 수 있다. 처리해야 하는 파일별 inumber를 안다면 아래와 같이 사용할 수 있다.
-
-```s
-❯ ls -i
- 0443034 aws                         8614913 k8s-kube                   11606226 spark-kinesis-integration
- 19013432 coding-test-fry            17821859 kafka-and-elk-example       6091599 transfer-learning
-
-# aws 디렉토리를 aws-test로 변경
-❯ find ./ -inum 10443034 -exec mv {} aws-test;
-```
