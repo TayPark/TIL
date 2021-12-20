@@ -1,0 +1,28 @@
+# SNS and SQS
+
+- AWS SNS(Simple Notification Service)
+  - 특정 주제에 대해 관련있는 사용자 혹은 엔드포인트에게 메세지를 전송하는 서비스
+  - 주제(Topic)에 관한 메세지를 주제에 소속된 다수의 구독자(endpoint)에게 전달 가능
+  - Topic과 Subscription으로 나뉘며, Publisher와 endpoint가 전달하거나 전달 받음
+  - 주제는 메세지의 성격을 정의
+    - 게시할 수 있는 대상과 받을 수 있는 대상
+    - 암호화 여부
+    - 메세지 전송 정책
+  - 구독은 메세지 받을 대상 설정
+    - HTTP
+    - SQS
+    - 이메일
+    - Lambda
+    - 모바일 앱
+- AWS SQS(Simple Queue Service)
+  - 서비스 간 직접 통신을 디커플링하기 위한 분산 큐 제공
+    - 직접 통신시 장애를 통해 메세지를 잃어버릴 수 있는 문제 대비
+  - 메세지는 receiver가 확인 후 삭제
+  - 각 메세지는 최대 256KB의 텍스트로 구성
+  - 기본 4일, 최대 14일까지 저장 가능
+  - 처리되지 않은 서비스는 다시 큐에 보존되며, 다른 요청자가 열람할 수 있음
+  - Standard와 FIFO로 나뉨
+    - Standard: 초당 무제한에 가까운 요청을 처리할 수 있고, 최소 한 번의 요청(least-at-once)를 보장하나 순서가 보장되지 않음
+    - FIFO: 초당 300개의 선입선출
+- SQS vs. SNS
+  - SNS는 Push 기반 서비스, SQS는 Pull 기반 서비스
