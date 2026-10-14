@@ -40,7 +40,7 @@ const schema = article ? {
         <p class="eyebrow">FIELD NOTES</p>
         <p class="sidebar-intro">배운 것을 기록하고,<br/>필요할 때 다시 찾습니다.</p>
         <p class="nav-label">주제</p>
-        <nav>{categories.map(category => <a href={category.url} aria-current={Astro.url.pathname === category.url ? 'page' : undefined}><span>{category.label}</span><span class="count">{category.count}</span></a>)}</nav>
+        <nav>{categories.map(category => <div class="topic-group"><a href={category.url} aria-current={Astro.url.pathname === category.url ? 'page' : undefined}><span>{category.label}</span><span class="count">{category.count}</span></a>{category.children && <nav class="conference-nav" aria-label="컨퍼런스별 기록">{category.children.map(child => <a href={child.url} aria-current={Astro.url.pathname === child.url ? 'page' : undefined}><span>{child.label}</span><span class="count">{child.count}</span></a>)}</nav>}</div>)}</nav>
         <a class="sidebar-author" href="https://github.com/TayPark"><span class="author-avatar">T</span><span>TayPark<small>데이터와 시스템의 학습 기록</small></span></a>
       </aside>
       <main id="main" tabindex="-1"><slot /></main>

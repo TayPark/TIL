@@ -1,11 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import DocumentList from '../../components/DocumentList.astro';
-import { categories, documents, BASE, slugFor } from '../../lib/content.mjs';
-export function getStaticPaths() { return categories.map(category => ({ params: { topic: slugFor(category.name + '.md') }, props: { category, entries: documents.filter(doc => doc.category === category.name) } })); }
+import { topics, documents, BASE } from '../../lib/content.mjs';
+export function getStaticPaths() { return topics.map(category => ({ params: { topic: category.url.split('/').filter(Boolean).at(-1) }, props: { category, entries: documents.filter(doc => category.parent ? doc.conference === category.name : doc.category === category.name) } })); }
 const { category, entries } = Astro.props;
 ---
 <Layout title={category.label + ' | TayPark의 TIL'} description={category.label + '에 관한 학습 기록과 기술 노트.'} canonical={category.url}>
-  <section class="page-intro compact"><a class="back-link" href={BASE}>← 모든 기록</a><h1>{category.label}</h1><p>{category.count}개의 기록을 모았습니다.</p></section>
-  <DocumentList documents={entries} />
+  <section class="page-intro compact"><a class="back-link" href={category.parent ? BASE + 'topics/conferences/' : BASE}>← {category.parent ? '컨퍼런스' : '모든 기록'}</a><h1>{category.label}</h1><p>{category.count}개의 기록을 모았습니다.</p></section>
+  {category.children ? <>{category.children.map(child => <section class="conference-section"><div class="section-heading"><h2><a href={child.url}>{child.label}</a> <span>{child.count}</span></h2><a class="back-link" href={child.url}>목록 보기 →</a></div><DocumentList documents={entries.filter(doc => doc.conference === child.name)} /></section>)}</> : <DocumentList documents={entries} />}
 </Layout>

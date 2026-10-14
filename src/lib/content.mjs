@@ -13,13 +13,15 @@ export const AUTHOR = 'TayPark';
 export const categoryNames = {
   'Data Engineering': '데이터 엔지니어링', architecture: '아키텍처', aws: 'AWS',
   books: '책', retrospective: '회고', etc: '기술 노트',
-  'microsoft-learning': '분산 컴퓨팅', inflearn: '강의 노트', DDD: '도메인 주도 설계',
+  'microsoft-learning': '분산 컴퓨팅', inflearn: '강의 노트', DDD: '도메인 주도 설계', conferences: '컨퍼런스',
 };
+const legacyConferenceFolders = ['2020 Woowa TechConf', '2021 Slash21', 'NHN Forward 2020'];
+const legacyPath = file => file.startsWith('conferences/') && legacyConferenceFolders.includes(file.split('/')[1]) ? file.slice('conferences/'.length) : file;
 export const tracked = execFileSync('git', ['ls-files', '-z'], { encoding: 'utf8' }).split('\0').filter(Boolean);
 const sourceFiles = tracked.filter(file => file.endsWith('.md') && !file.startsWith('.') && file !== 'README.md' && !file.startsWith('site-docs/'));
 export const slugFor = file => file.replace(/\.md$/i, '').split('/').map(part => part.normalize('NFKC').toLowerCase().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}._-]/gu, '-').replace(/-+/g, '-')).join('/');
-export const articleURL = file => `${BASE}posts/${slugFor(file)}/`;
-const fileLookup = new Map(sourceFiles.map(file => [file.toLowerCase(), file]));
+export const articleURL = file => `${BASE}posts/${slugFor(legacyPath(file))}/`;
+const fileLookup = new Map(sourceFiles.flatMap(file => [[file.toLowerCase(), file], [legacyPath(file).toLowerCase(), file]]));
 const highlighter = await createHighlighter({ themes: ['github-light'], langs: ['bash', 'sql', 'python', 'javascript', 'typescript', 'java', 'json', 'yaml', 'xml', 'scala', 'dockerfile', 'text'] });
 const markdown = new MarkdownIt({ html: true, linkify: true, typographer: false,
   highlight(code, language) {
@@ -45,10 +47,11 @@ function resolveURL(value, file) {
   const match = raw.match(/^([^?#]*)(.*)$/);
   const pathname = match[1];
   const suffix = normalizeFragment(match[2]);
-  const target = github || pathname.startsWith('/') ? pathname.replace(/^\//, '') : path.posix.normalize(path.posix.join(path.posix.dirname(file), pathname));
+  let target = github || pathname.startsWith('/') ? pathname.replace(/^\//, '') : path.posix.normalize(path.posix.join(path.posix.dirname(file), pathname));
   const document = fileLookup.get(target.toLowerCase());
   if (document) return articleURL(document) + suffix;
   if (target === 'README.md') return BASE + suffix;
+  if (legacyConferenceFolders.some(folder => target.startsWith(folder + '/'))) target = 'conferences/' + target;
   if (tracked.includes(target)) return BASE + 'source-assets/' + target.split('/').map(encodeURIComponent).join('/') + suffix;
   return value;
 }
@@ -82,10 +85,13 @@ export const documents = sourceFiles.map(file => {
     }
   });
   $('table').each((_, el) => $(el).wrap('<div class="table-scroll" tabindex="0"></div>'));
-  const modified = execFileSync('git', ['log', '-1', '--format=%cI', '--', file], { encoding: 'utf8' }).trim();
+  // Follow directory moves while retaining the last content commit date.
+  const historyDate = historyPath => execFileSync('git', ['log', '--follow', '--diff-filter=AM', '-1', '--format=%cI', '--', historyPath], { encoding: 'utf8' }).trim();
+  const modified = historyDate(file) || historyDate(legacyPath(file));
   const category = file.split('/')[0];
-  return { file, title, description, headings, modified, category, categoryLabel: categoryNames[category] || category,
-    slug: slugFor(file), url: articleURL(file), html: $('body').html(),
+  const conference = category === 'conferences' ? file.split('/')[1] : undefined;
+  return { file, title, description, headings, modified, category, conference, categoryLabel: categoryNames[category] || category,
+    slug: slugFor(legacyPath(file)), url: articleURL(file), html: $('body').html(),
     sourceURL: 'https://github.com/TayPark/TIL/blob/master/' + file.split('/').map(encodeURIComponent).join('/') };
 }).sort((a, b) => b.modified.localeCompare(a.modified) || a.title.localeCompare(b.title));
 if (new Set(documents.map(doc => doc.slug)).size !== documents.length) throw new Error('Duplicate article URLs');
@@ -94,3 +100,11 @@ export const categories = [...new Set(documents.map(doc => doc.category))].sort(
   count: documents.filter(doc => doc.category === category).length,
   url: `${BASE}topics/${slugFor(category + '.md')}/`,
 }));
+export const conferences = [...new Set(documents.filter(doc => doc.conference).map(doc => doc.conference))].sort().map(conference => ({
+  name: conference, label: conference, parent: 'conferences',
+  count: documents.filter(doc => doc.conference === conference).length,
+  url: `${BASE}topics/${slugFor((legacyConferenceFolders.includes(conference) ? conference : 'conferences-' + conference) + '.md')}/`,
+}));
+const conferenceCategory = categories.find(category => category.name === 'conferences');
+if (conferenceCategory) conferenceCategory.children = conferences;
+export const topics = [...categories, ...conferences];

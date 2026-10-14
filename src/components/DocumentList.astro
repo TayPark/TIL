@@ -2,5 +2,5 @@
 const { documents } = Astro.props;
 ---
 <ol class="document-list">
-  {documents.map((doc, index) => <li><a href={doc.url} class="document-row"><span class="row-number">{String(index + 1).padStart(2, '0')}</span><div class="row-content"><div class="row-meta"><span>{doc.categoryLabel}</span>{doc.modified && <time datetime={doc.modified}>수정 {doc.modified.slice(0, 10)}</time>}</div><h2>{doc.title}</h2><p>{doc.description}</p></div><span class="row-arrow" aria-hidden="true">↗</span></a></li>)}
+  {documents.map((doc, index) => <li><a href={doc.url} class="document-row"><span class="row-number">{String(index + 1).padStart(2, '0')}</span><div class="row-content"><div class="row-meta"><span>{doc.categoryLabel}{doc.conference && ` / ${doc.conference}`}</span>{doc.modified && <time datetime={doc.modified}>수정 {doc.modified.slice(0, 10)}</time>}</div><h2>{doc.title}</h2><p>{doc.description}</p></div><span class="row-arrow" aria-hidden="true">↗</span></a></li>)}
 </ol>

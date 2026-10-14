@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { load } from 'cheerio';
-import { documents, categories, BASE, ORIGIN } from '../src/lib/content.mjs';
+import { documents, categories, topics, BASE, ORIGIN } from '../src/lib/content.mjs';
 
 const htmlFiles = [];
 function walk(directory) { for (const item of fs.readdirSync(directory, { withFileTypes: true })) { const file = path.join(directory, item.name); if (item.isDirectory()) walk(file); else if (file.endsWith('.html')) htmlFiles.push(file); } }
@@ -10,7 +10,7 @@ walk('dist');
 const publishedArticles = htmlFiles.filter(file => file.startsWith('dist/posts/'));
 assert.equal(publishedArticles.length, documents.length, 'Published article count');
 const sitemap = load(fs.readFileSync('dist/sitemap.xml', 'utf8'), { xmlMode: true });
-assert.equal(sitemap('url').length, documents.length + categories.length + 1, 'Sitemap URL count');
+assert.equal(sitemap('url').length, documents.length + topics.length + 1, 'Sitemap URL count');
 const pages = new Map();
 for (const file of htmlFiles) {
   const $ = load(fs.readFileSync(file, 'utf8'));
