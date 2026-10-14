@@ -1,0 +1,20 @@
+{
+  "name": "taypark-til-blog",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/assets.mjs && astro dev --host 127.0.0.1",
+    "build": "node scripts/assets.mjs && astro build && pagefind --site dist",
+    "preview": "astro preview --host 127.0.0.1",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.8",
+    "cheerio": "1.1.2",
+    "github-slugger": "2.0.0",
+    "markdown-it": "14.3.2",
+    "markdown-it-anchor": "9.2.0",
+    "pagefind": "1.5.2",
+    "shiki": "3.13.0"
+  }
+}

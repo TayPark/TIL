@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { documents, categories, BASE } from '../../lib/content.mjs';
+export function getStaticPaths() { return documents.map(article => ({ params: { slug: article.slug }, props: { article } })); }
+const { article } = Astro.props;
+const category = categories.find(item => item.name === article.category);
+const related = documents.filter(doc => doc.category === article.category && doc.file !== article.file).slice(0, 3);
+---
+<Layout title={article.title + ' | TayPark의 TIL'} description={article.description} canonical={article.url} article={article}>
+  <nav class="breadcrumbs" aria-label="현재 위치"><a href={BASE}>기록</a><span>/</span><a href={category.url}>{category.label}</a></nav>
+  <article class="article" data-pagefind-body>
+    <header class="article-header"><p class="eyebrow" data-pagefind-filter="주제">{article.categoryLabel}</p><h1 data-pagefind-meta="title">{article.title}</h1><div class="article-meta"><span>TayPark</span>{article.modified && <time datetime={article.modified}>수정 {article.modified.slice(0, 10)}</time>}<a href={article.sourceURL} data-pagefind-ignore>원문 ↗</a></div></header>
+    {article.headings.length > 0 && <details class="toc"><summary>이 글의 목차 <span>{article.headings.length}</span></summary><nav aria-label="문서 목차"><ol>{article.headings.map(heading => <li class:list={{ 'toc-nested': heading.depth === 3 }}><a href={'#' + heading.id}>{heading.text}</a></li>)}</ol></nav></details>}
+    <div class="prose" set:html={article.html} />
+  </article>
+  {related.length > 0 && <section class="related" aria-labelledby="related-title"><h2 id="related-title">같은 주제의 기록</h2>{related.map(doc => <a href={doc.url}>{doc.title}<span aria-hidden="true">→</span></a>)}</section>}
+  <a class="back-link bottom-back" href={category.url}>← {category.label} 목록으로</a>
+</Layout>

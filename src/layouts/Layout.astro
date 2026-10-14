@@ -1,0 +1,50 @@
+---
+import { BASE, ORIGIN, categories } from '../lib/content.mjs';
+import '../styles/global.css';
+const { title = 'TayPark의 TIL', description = '데이터 엔지니어링, 아키텍처, 클라우드와 개발에 관한 학습 기록.', canonical = Astro.url.pathname, noindex = false, article } = Astro.props;
+const schema = article ? {
+  '@context': 'https://schema.org', '@type': 'BlogPosting', headline: article.title,
+  description: article.description, url: ORIGIN + article.url, mainEntityOfPage: ORIGIN + article.url,
+  author: { '@type': 'Person', name: 'TayPark', url: 'https://github.com/TayPark' },
+  ...(article.modified ? { dateModified: article.modified } : {}), inLanguage: 'ko',
+} : { '@context': 'https://schema.org', '@type': 'WebSite', name: 'TayPark의 TIL', url: ORIGIN + BASE, inLanguage: 'ko' };
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="author" content="TayPark" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <link rel="canonical" href={ORIGIN + canonical} />
+    <link rel="icon" type="image/svg+xml" href={BASE + 'favicon.svg'} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={ORIGIN + canonical} />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="TayPark의 TIL" />
+    <meta name="twitter:card" content="summary" />
+    <title>{title}</title>
+    <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문으로 이동</a>
+    <header class="site-header">
+      <a class="brand" href={BASE} aria-label="TayPark의 TIL 홈"><span class="brand-mark">T.</span><span>TayPark <span class="brand-divider">/</span> TIL</span></a>
+      <nav aria-label="주 메뉴"><a href={BASE} aria-current={Astro.url.pathname === BASE ? 'page' : undefined}>모든 기록</a><a class="search-link" href={BASE + 'search/'}><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="m16 16 5 5" stroke="currentColor" stroke-width="2"/></svg>검색</a><a class="github-link" href="https://github.com/TayPark/TIL">GitHub ↗</a></nav>
+    </header>
+    <div class="site-grid">
+      <aside class="sidebar" aria-label="주제별 탐색">
+        <p class="eyebrow">FIELD NOTES</p>
+        <p class="sidebar-intro">배운 것을 기록하고,<br/>필요할 때 다시 찾습니다.</p>
+        <p class="nav-label">주제</p>
+        <nav>{categories.map(category => <a href={category.url} aria-current={Astro.url.pathname === category.url ? 'page' : undefined}><span>{category.label}</span><span class="count">{category.count}</span></a>)}</nav>
+        <a class="sidebar-author" href="https://github.com/TayPark"><span class="author-avatar">T</span><span>TayPark<small>데이터와 시스템의 학습 기록</small></span></a>
+      </aside>
+      <main id="main" tabindex="-1"><slot /></main>
+    </div>
+    <footer class="site-footer"><span>TayPark의 TIL · Today I Learned</span><span>기록은 계속됩니다.</span></footer>
+  </body>
+</html>

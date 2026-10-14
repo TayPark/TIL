@@ -1,0 +1,20 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { BASE } from '../lib/content.mjs';
+---
+<Layout title="기록 검색 | TayPark의 TIL" description="TayPark의 학습 기록에서 제목과 본문을 검색하세요." noindex>
+  <section class="page-intro compact"><span class="eyebrow">SEARCH THE NOTES</span><h1>기록 찾기.</h1><p>제목과 본문에서 필요한 내용을 찾아보세요.</p></section>
+  <link href={BASE + 'pagefind/pagefind-ui.css'} rel="stylesheet" />
+  <div id="search" aria-label="문서 검색"></div>
+  <p id="search-status" role="status" class="search-status">검색을 준비하고 있습니다.</p>
+  <noscript><p>검색하려면 JavaScript가 필요합니다. <a href={BASE}>전체 문서 목록</a>에서 기록을 찾아보세요.</p></noscript>
+  <script is:inline src={BASE + 'pagefind/pagefind-ui.js'}></script>
+  <script is:inline define:vars={{ base: BASE }}>
+    const status = document.getElementById('search-status');
+    try {
+      new PagefindUI({ element: '#search', bundlePath: base + 'pagefind/', baseUrl: base, showSubResults: true, showImages: false, resetStyles: false,
+        translations: { placeholder: '검색어를 입력하세요', clear_search: '지우기', load_more: '더 보기', search_label: '문서 검색', filters_label: '필터', zero_results: '[SEARCH_TERM] 검색 결과가 없습니다', many_results: '[SEARCH_TERM] 검색 결과 [COUNT]개', one_result: '[SEARCH_TERM] 검색 결과 1개', searching: '검색 중…' } });
+      status.textContent = '';
+    } catch (error) { status.textContent = '검색을 불러오지 못했습니다. 새로고침해 주세요.'; }
+  </script>
+</Layout>
